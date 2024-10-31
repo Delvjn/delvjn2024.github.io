@@ -1,0 +1,10 @@
+node_modules
+coverage
+dist
+.github
+**/*.d.ts
+GridEngine.min.js
+serve
+docs
+speedtests
+babel.config.cjs

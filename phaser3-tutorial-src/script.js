@@ -118,7 +118,7 @@ function create ()
     scoreText = this.add.text(16, 16, 'Sindre`s score: 0', { fontSize: '32px', fill: '#fff' } );
 
     //  Timer
-    this.initialTime = 10;
+    this.initialTime = 30;
     this.gameOver = false;
     // Display timer
     this.timeText = this.add.text(16, 50, `Time: ${this.initialTime}`, { fontSize: '32px', fill: '#fff'} );
@@ -138,7 +138,9 @@ function create ()
 
             player.anims.play('turn');
 
-            gameOver = true;
+            this.gameOver = true;
+
+            // this.timerEvent.remove(false);
 
             this.add.text(400, 150, `Game Over`, { fontSize: '64px', fill: '#fff' } ).setOrigin(0.5);
             this.add.text(400, 300, `Total score: ${score}`, { fontSize: '32px', fill: '#fff' } ).setOrigin(0.5);
