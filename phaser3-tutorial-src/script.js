@@ -6,8 +6,8 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 900 },
-            debug: false,
-            checkCollision: { up: false },
+            debug: false
+            // checkCollision: { up: false },
         }
     },
     scene: {
@@ -61,7 +61,7 @@ function create ()
     
     // player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    // player.body.setGravityY(700);
+    player.body.setGravityY(-900);
     
     // Left movement animation
     this.anims.create({
@@ -117,42 +117,42 @@ function create ()
     // Score
     scoreText = this.add.text(16, 16, 'Sindre`s score: 0', { fontSize: '32px', fill: '#fff' } );
 
-    //  Timer
-    this.initialTime = 30;
-    this.gameOver = false;
-    // Display timer
-    this.timeText = this.add.text(16, 50, `Time: ${this.initialTime}`, { fontSize: '32px', fill: '#fff'} );
+    // //  Timer
+    // this.initialTime = 30;
+    // this.gameOver = false;
+    // // Display timer
+    // this.timeText = this.add.text(16, 50, `Time: ${this.initialTime}`, { fontSize: '32px', fill: '#fff'} );
     
-    this.updateTimer = function () {
-        if (this.gameOver) {
-            return;
-        }
-        this.initialTime -= 1;
-        this.timeText.setText(`Time: ${this.initialTime}`);
+    // this.updateTimer = function () {
+    //     if (this.gameOver) {
+    //         return;
+    //     }
+    //     this.initialTime -= 1;
+    //     this.timeText.setText(`Time: ${this.initialTime}`);
 
-        if (this.initialTime <= 0) {
+    //     if (this.initialTime <= 0) {
         
-            this.physics.pause();
+    //         this.physics.pause();
 
-            player.setTint(0xff0000);
+    //         player.setTint(0xff0000);
 
-            player.anims.play('turn');
+    //         player.anims.play('turn');
 
-            this.gameOver = true;
+    //         this.gameOver = true;
 
-            // this.timerEvent.remove(false);
+    //         // this.timerEvent.remove(false);
 
-            this.add.text(400, 150, `Game Over`, { fontSize: '64px', fill: '#fff' } ).setOrigin(0.5);
-            this.add.text(400, 300, `Total score: ${score}`, { fontSize: '32px', fill: '#fff' } ).setOrigin(0.5);
-        }
-    }
+    //         this.add.text(400, 150, `Game Over`, { fontSize: '64px', fill: '#fff' } ).setOrigin(0.5);
+    //         this.add.text(400, 300, `Total score: ${score}`, { fontSize: '32px', fill: '#fff' } ).setOrigin(0.5);
+    //     }
+    // }
 
-    this.time.addEvent({
-        delay: 1000,
-        callback: this.updateTimer,
-        callbackScope: this,
-        loop: true
-    });
+    // this.time.addEvent({
+    //     delay: 1000,
+    //     callback: this.updateTimer,
+    //     callbackScope: this,
+    //     loop: true
+    // });
 
 
 }
@@ -167,6 +167,7 @@ function update ()
     {
         return;
     }
+    
     // Key logic and velocity
     if (cursors.left.isDown)
     {
@@ -187,12 +188,10 @@ function update ()
         player.anims.play('turn');
     }
 
-    if (cursors.up.isDown && player.body.touching.down)
+    if (cursors.up.isDown) // && player.body.touching.down)
     {
-        player.setVelocityY(-740);
+        player.setVelocityY(-640);
     }
-
-
 }
 
 // Collecting/disabling body stars
