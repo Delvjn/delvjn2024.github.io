@@ -159,6 +159,7 @@ function create ()
 
 function update () 
 {
+    const defaultVelocity = 260;
     // Game over
     if (this.gameOver) {
         return;
@@ -171,26 +172,23 @@ function update ()
     // Key logic and velocity
     if (cursors.left.isDown)
     {
-        player.setVelocityX(-260);
-
+        player.setVelocityX(-defaultVelocity);
         player.anims.play('left', true);
     }
     else if (cursors.right.isDown)
     {
-        player.setVelocityX(260);
-
+        player.setVelocityX(defaultVelocity);
         player.anims.play('right', true);
     }
     else
     {
         player.setVelocityX(0);
-
         player.anims.play('turn');
     }
 
-    if (cursors.up.isDown) // && player.body.touching.down)
+    if (cursors.up.isDown && player.body.touching.down)
     {
-        player.setVelocityY(-640);
+        player.setVelocityY(-700);
     }
 }
 

@@ -6,6 +6,7 @@ var config = {
     width: 800,
     height: 600,
     backgroundColor: '#878787',
+    // pixelArt: true,
     physics: {
         default: 'arcade',
         debug: true
@@ -26,17 +27,47 @@ var player;
 var cursors;
 var keyW, keyA, keyS, keyD, keyShift;
 var camera;
+var layerBackground;
 
 function preload() 
 {
     // Path to assets (relative from index.html)
     this.load.path = './assets/'
-    // Atlas
+
+    // Character atlas
     this.load.atlas('hero', 'character.png', 'character.json');
+
+    // Map tiles image
+    this.load.image('overworldTiles', 'overworld.png');
+    // Map json file
+    this.load.tilemapTiledJSON('map', '2d_rpg_map.json');
+
 }
 
 function create() 
 {
+
+    // test overworld tile image
+    // this.add.image(400, 300, 'overworldTiles')
+
+    // Map - Create tilemap
+    const map = this.make.tilemap( { key: 'map'} );
+
+    // overworld tileset image
+    const overworldTiles = map.addTilesetImage('overworld', 'overworldTiles');
+
+    
+    // Layer 0 background
+    const layerBackground = map.createLayer('background', overworldTiles);
+    
+    // Layer 1 Ground
+    const layerGround = map.createLayer('ground', overworldTiles);
+    
+    // Layer 2 Static Objects with Collision
+    const layerObjectsWithCollision = map.createLayer('objectsWithCollision', overworldTiles);
+    // 
+    layerObjectsWithCollision.setCollisionByExclusion([-1]);
+
     // Initialize arrow keys
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -48,8 +79,27 @@ function create()
     this.keyShift = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);    
 
     // Create player sprite
-    console.log("Loading player...");    
-    player = this.physics.add.sprite(400, 300, 'hero');
+    console.log("Loading player...");
+    player = this.physics.add.sprite(0, 0, 'hero');
+    // player size
+    player.setSize(14, 14);
+    // Size offset
+    player.setOffset(0, 7)
+
+
+    // Camera
+    camera = this.cameras.main;
+
+    // Zoom
+    camera.setZoom(1.5);
+    // camera.setZoom(1);
+
+    // Follow player
+    camera.startFollow(player);
+
+    // Collision
+    this.physics.add.collider(player, layerObjectsWithCollision);
+    
 
 
     // Animations
@@ -129,14 +179,6 @@ function create()
         repeat: -1
     });
 
-    // Camera
-    camera = this.cameras.main;
-
-    // Zoom
-    camera.setZoom(1.5);
-
-    // Follow player
-    // camera.startFollow(player);
 
     
 
@@ -151,30 +193,26 @@ function update()
     const prevVelocity = player.body.velocity.clone();
 
     // Initialize player velocity
-    player.setVelocity(0, 0);
+    player.setVelocity(0);
 
     // Sprint
     // let multiplier = 1;
-    // if (this.keyShift.isDown)  multiplier = 1.5
+    if (this.keyShift.isDown)  multiplier = 1.5
 
-    // Keybindings and associated animations
-    
+    // Keybindings
     // Vertical movement
     if (cursors.down.isDown || this.keyS.isDown) {
-        player.setVelocityY(defaultVelocity); // * multiplier to enable sprint
-        // player.anims.play('moveDown', true);
+        player.body.setVelocityY(defaultVelocity); // * multiplier to enable sprint
+
     } else if (cursors.up.isDown || this.keyW.isDown) {
-            player.setVelocityY(-defaultVelocity);
-            // player.anims.play('moveUp', true);
+            player.body.setVelocityY(-defaultVelocity);
     }
 
     // Horizontal movement
     if (cursors.right.isDown || this.keyD.isDown){
-        player.setVelocityX(defaultVelocity);
-        // player.anims.play('moveRight', true)
+        player.body.setVelocityX(defaultVelocity);
     } else if (cursors.left.isDown || this.keyA.isDown) {
-            player.setVelocityX(-defaultVelocity);
-            // player.anims.play('moveLeft', true);
+            player.body.setVelocityX(-defaultVelocity);
     }
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -192,10 +230,20 @@ function update()
     } else player.anims.stop();
 
     // Idle animations
-    // if (velocity)
-
-
-
+    if (
+        !cursors.left.isDown && !this.keyA.isDown &&
+        !cursors.right.isDown && !this.keyD.isDown &&
+        !cursors.up.isDown && !this.keyW.isDown &&
+        !cursors.down.isDown && !this.keyS.isDown
+    ) {
+    if (prevVelocity.x < 0) player.setTexture('hero', 'moveLeft001');
+    else if (prevVelocity.x > 0) player.setTexture('hero', 'moveRight001');
+    else if (prevVelocity.y > 0) player.setTexture('hero', 'moveDown001');
+    else if (prevVelocity.y < 0) player.setTexture('hero', 'moveUp001');
+    }
+    
+    
+    
 
 }
 
