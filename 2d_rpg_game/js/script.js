@@ -1,25 +1,5 @@
 console.log("Test..");
 
-// Config
-var config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    backgroundColor: '#878787',
-    // pixelArt: true,
-    physics: {
-        default: 'arcade',
-        debug: true
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-}
-
-// Game instance
-var game = new Phaser.Game(config);
 
 // Global variables
 
@@ -179,12 +159,21 @@ function create()
         repeat: -1
     });
 
+    // Debug Graphics
+    const debugGraphics = this.add.graphics().setAlpha(0.75);
+    // layerObjectsWithCollision.renderDebug(debugGraphics, {
+    //     tileColor: null, // Non-colliding tiles
+    //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Colliding tiles
+    //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Colliding face edges
+    // });
+
+    // player.body.debugBody = true;
+    // player.body.debugFace = true;
 
     
 
 }
 
-// Idle animation logic
 
 function update() 
 {
@@ -218,7 +207,7 @@ function update()
     // Normalize and scale the velocity so that player can't move faster along a diagonal
     player.body.velocity.normalize().scale(defaultVelocity);
 
-    // Animations - animation get precedence in the start of the if else, and less down in the if else
+    // Animations - animation get precedence in the start of the if else
     if (cursors.right.isDown || this.keyD.isDown) {
         player.anims.play('moveRight', true);
     } else if (cursors.left.isDown || this.keyA.isDown) {
@@ -247,3 +236,23 @@ function update()
 
 }
 
+// Config
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: '#878787',
+    // pixelArt: true,
+    physics: {
+        default: 'arcade',
+        debug: true
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+}
+
+// Game instance
+var game = new Phaser.Game(config);

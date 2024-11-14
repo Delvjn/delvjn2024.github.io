@@ -3,8 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "2d_rpg_map.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "": {
@@ -12,9 +13,9 @@
         },
         "2d_rpg_map.json": {
             "scale": 1.4658203125,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 0,
+                "x": 22.171885409726826,
                 "y": 0
             }
         },
@@ -25,7 +26,7 @@
             "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 0.6666666666666856,
+                "x": 22.333333333333314,
                 "y": 13.333333333333371
             }
         },
@@ -41,9 +42,13 @@
     "map.tileHeight": 16,
     "map.tileWidth": 16,
     "openFiles": [
+        "2d_rpg_map.tmx",
+        "2d_rpg_map.json"
     ],
     "project": "weTryAgain2DGame.tiled-project",
     "recentFiles": [
+        "2d_rpg_map.json",
+        "2d_rpg_map.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {
