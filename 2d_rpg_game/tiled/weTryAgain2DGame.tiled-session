@@ -15,8 +15,8 @@
             "scale": 1.4658203125,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 22.171885409726826,
-                "y": 0
+                "x": 0,
+                "y": -0.3411059293804044
             }
         },
         "2d_rpg_map.json#overworld": {
@@ -24,17 +24,17 @@
         },
         "2d_rpg_map.tmx": {
             "scale": 1.5,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 22.333333333333314,
-                "y": 13.333333333333371
+                "x": 14.333333333333314,
+                "y": 34.666666666666686
             }
         },
         "2d_rpg_map.tmx#overworld": {
             "scaleInDock": 1.5
         }
     },
-    "last.exportedFilePath": "C:/Users/mathau82212/OneDrive - Noroff Education AS/Documents/Backend Development 1 Year/my_projects/phaser_first_game/2d_rpg_game/tiled",
+    "last.exportedFilePath": "C:/Users/mathau82212/OneDrive - Noroff Education AS/Documents/Backend Development 1 Year/my_projects/phaser_first_game/2d_rpg_game/assets",
     "last.imagePath": "C:/Users/mathau82212/OneDrive - Noroff Education AS/Documents/Backend Development 1 Year/my_projects/phaser_first_game/2d_rpg_game/assets",
     "map.fixedSize": false,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
@@ -46,6 +46,7 @@
         "2d_rpg_map.json"
     ],
     "project": "weTryAgain2DGame.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
         "2d_rpg_map.json",
         "2d_rpg_map.tmx"

@@ -1,8 +1,6 @@
 console.log("Test..");
 
-
 // Global variables
-
 var player;
 var cursors;
 var keyW, keyA, keyS, keyD, keyShift;
@@ -17,6 +15,9 @@ function preload()
     // Character atlas
     this.load.atlas('hero', 'character.png', 'character.json');
 
+    // Enemy atlas
+    this.load.atlas('enemy', 'NPC_test.png', 'NPC_test.json');
+
     // Map tiles image
     this.load.image('overworldTiles', 'overworld.png');
     // Map json file
@@ -27,7 +28,7 @@ function preload()
 function create() 
 {
 
-    // test overworld tile image
+    // test if overworld tile image loads correctly
     // this.add.image(400, 300, 'overworldTiles')
 
     // Map - Create tilemap
@@ -40,13 +41,17 @@ function create()
     // Layer 0 background
     const layerBackground = map.createLayer('background', overworldTiles);
     
-    // Layer 1 Ground
+    // Layer 1 ground
     const layerGround = map.createLayer('ground', overworldTiles);
     
-    // Layer 2 Static Objects with Collision
+    // Layer 2 Objects with Collision
     const layerObjectsWithCollision = map.createLayer('objectsWithCollision', overworldTiles);
-    // 
     layerObjectsWithCollision.setCollisionByExclusion([-1]);
+    // layerObjectsWithCollision.setCollisionByProperty( { collision: true } ); // Could not get this to work
+
+    
+
+
 
     // Initialize arrow keys
     cursors = this.input.keyboard.createCursorKeys();
@@ -66,16 +71,22 @@ function create()
     // Size offset
     player.setOffset(0, 7)
 
+    // Layer 3 above
+    const layerAbove = map.createLayer('above', overworldTiles);
+
 
     // Camera
     camera = this.cameras.main;
-
-    // Zoom
-    camera.setZoom(1.5);
-    // camera.setZoom(1);
-
+    
     // Follow player
     camera.startFollow(player);
+
+    // Bounds
+    // camera.setBounds(0, 0, layerGround.widthInPixels, layerGround.heightInPixels);
+
+    // Zoom
+    camera.setZoom(1.4);
+
 
     // Collision
     this.physics.add.collider(player, layerObjectsWithCollision);
@@ -83,6 +94,8 @@ function create()
 
 
     // Animations
+
+    // Hero
     this.anims.create({
         key: 'idleDown',
         frames: [{ key: 'hero', frame: 'moveDown001' }],
@@ -159,16 +172,28 @@ function create()
         repeat: -1
     });
 
-    // Debug Graphics
-    const debugGraphics = this.add.graphics().setAlpha(0.75);
-    // layerObjectsWithCollision.renderDebug(debugGraphics, {
-    //     tileColor: null, // Non-colliding tiles
-    //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Colliding tiles
-    //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Colliding face edges
-    // });
+    // Enemy
+    this.anims.create({
+        key: 'enemyMove',
+        frames: [{ key: 'enemy', frame: 'sprite1' }],
+        frameRate: 10,
+        repeat: -1
+    });
 
-    // player.body.debugBody = true;
-    // player.body.debugFace = true;
+    // Debug Graphics
+
+    this.physics.world.createDebugGraphic();
+
+    // Create worldLayer collision graphic above the player, but below the help text
+    // const graphics = this.add
+    //   .graphics()
+    //   .setAlpha(0.75)
+    //   .setDepth(20);
+    // layerObjectsWithCollision.renderDebug(graphics, {
+    // tileColor: null, // Color of non-colliding tiles
+    // collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+    // faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+    // });
 
     
 
@@ -192,16 +217,15 @@ function update()
     // Vertical movement
     if (cursors.down.isDown || this.keyS.isDown) {
         player.body.setVelocityY(defaultVelocity); // * multiplier to enable sprint
-
     } else if (cursors.up.isDown || this.keyW.isDown) {
-            player.body.setVelocityY(-defaultVelocity);
+        player.body.setVelocityY(-defaultVelocity);
     }
 
     // Horizontal movement
     if (cursors.right.isDown || this.keyD.isDown){
         player.body.setVelocityX(defaultVelocity);
     } else if (cursors.left.isDown || this.keyA.isDown) {
-            player.body.setVelocityX(-defaultVelocity);
+        player.body.setVelocityX(-defaultVelocity);
     }
 
     // Normalize and scale the velocity so that player can't move faster along a diagonal
@@ -230,8 +254,6 @@ function update()
     else if (prevVelocity.y > 0) player.setTexture('hero', 'moveDown001');
     else if (prevVelocity.y < 0) player.setTexture('hero', 'moveUp001');
     }
-    
-    
     
 
 }
