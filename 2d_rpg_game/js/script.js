@@ -6,6 +6,8 @@ var cursors;
 var keyW, keyA, keyS, keyD, keyShift;
 var camera;
 var layerBackground;
+var enemies;
+var playerHealth;
 
 function preload() 
 {
@@ -71,6 +73,35 @@ function create()
     // Size offset
     player.setOffset(0, 7)
 
+    // Enemy
+    this.enemies = this.physics.add.group();
+
+    // Define spawn radius
+    const spawnRadius = 150;
+
+    // Spawn enemy around the player
+    function spawnEnemy() {
+        const angle = Phaser.Math.FloatBetween(0, 2 * Math.PI);
+        const xOffset = spawnRadius * Math.cos(angle);
+        const yOffset = spawnRadius * Math.sin(angle);
+        const x = player.x + xOffset;
+        const y = player.y + yOffset;
+
+        var enemy = this.enemies.create(x, y, 'enemy', 'sprite1');
+        enemy.setCollideWorldBounds(true);
+        enemy.setVelocityX(0); // Adjust velocity as needed
+    }
+    spawnEnemy.call(this);
+
+    // Optionally, spawn enemies at intervals around the player
+    this.time.addEvent({
+        delay: 3000, // Every 3 seconds
+        callback: spawnEnemy,
+        callbackScope: this,
+        loop: true
+    });
+
+
     // Layer 3 above
     const layerAbove = map.createLayer('above', overworldTiles);
 
@@ -87,9 +118,15 @@ function create()
     // Zoom
     camera.setZoom(1.4);
 
+    // Player health
+    var health = 200;
+    var playerHealth = this.add.text(16, 50, '')
+
 
     // Collision
     this.physics.add.collider(player, layerObjectsWithCollision);
+    this.physics.add.collider(player, this.enemies);
+    this.physics.add.collider(this.enemies, this.enemies);
     
 
 
@@ -254,6 +291,11 @@ function update()
     else if (prevVelocity.y > 0) player.setTexture('hero', 'moveDown001');
     else if (prevVelocity.y < 0) player.setTexture('hero', 'moveUp001');
     }
+
+    // Enemy follows player
+    this.enemies.getChildren().forEach(enemy => {
+        this.physics.moveToObject(enemy, player, 10);
+    });
     
 
 }
