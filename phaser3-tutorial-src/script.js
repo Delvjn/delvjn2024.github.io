@@ -115,7 +115,7 @@ function create ()
     this.physics.add.overlap(player, stars, collectStar, null, this);
 
     // Score
-    scoreText = this.add.text(16, 16, 'Sindre`s score: 0', { fontSize: '32px', fill: '#fff' } );
+    scoreText = this.add.text(16, 16, 'Aksel`s/Kjell`s score: 0', { fontSize: '32px', fill: '#fff' } );
 
     // //  Timer
     // this.initialTime = 30;
@@ -198,7 +198,7 @@ function collectStar(player, star)
     star.disableBody(true, true);
 
     score += 100;
-    scoreText.setText('Sindre`s score: ' + score);
+    scoreText.setText('Aksel`s/Kjell` score: ' + score);
 
     // Check if star count is 0
     if (stars.countActive(true) === 0)
